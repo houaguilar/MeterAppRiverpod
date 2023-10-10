@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 
 const seedColor = Color.fromARGB(255, 7, 80, 59);
+const niceColor = Color(0xFF3498db);
 
 class AppTheme {
 
@@ -14,11 +15,11 @@ class AppTheme {
 
   ThemeData getTheme() => ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: seedColor,
+    colorSchemeSeed: niceColor,
     brightness: isDarkmode ? Brightness.dark : Brightness.light,
 
     listTileTheme: const ListTileThemeData(
-      iconColor: seedColor,
+      iconColor: niceColor,
     ),
 
   );

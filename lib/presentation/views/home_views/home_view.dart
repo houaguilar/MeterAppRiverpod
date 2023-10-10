@@ -1,17 +1,33 @@
+import 'package:app_with_riverpod/domain/domain.dart';
+import 'package:app_with_riverpod/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final isListMode = ref.watch(listModeProvider);
+
     return Scaffold(
-      body: _HomeScreenView(),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        child: const Column(
+          children: [
+            SizedBox(height: 20,),
+
+            Expanded(child: _HomeScreenView()),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.refresh),
+        onPressed: () {
+          ref.read(listModeProvider.notifier).toggleListMode();
+        },
+        child: isListMode ? const Icon(Icons.list) : const Icon(Icons.grid_view),
       ),
     );
   }
@@ -23,56 +39,57 @@ class _HomeScreenView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    //  final todos = ref.watch(todosProvider);
+    final data = HomeModel.generateTasks();
+    final isListMode = ref.watch(listModeProvider);
 
-    return ListView(
-      children: const [
-
-        _CustomListTile(
-            title: 'Muro',
-            subTitle: 'Un provider de sólo lectura',
-            location: 'muro'),
-
-        _CustomListTile(
-            title: 'Columna',
-            subTitle: 'Un uso aplicado',
-            location: 'columna'),
-
-        _CustomListTile(
-            title: 'Pisos',
-            subTitle: 'Un estado para almacenar un objeto',
-            location: 'pisos'),
-
-        _CustomListTile(
-            title: 'Concreto en losas',
-            subTitle: 'TODO - Una mezcla entre providers',
-            location: 'losas'),
-      ],
-    );
-  }
-}
-
-class _CustomListTile extends ConsumerWidget {
-  final String title;
-  final String subTitle;
-  final String location;
-
-  const _CustomListTile({
-    required this.title,
-    required this.subTitle,
-    required this.location,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-        title: Text(title),
-        subtitle: Text(subTitle),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded),
-        onTap: () {
-          //    ref.read(todosProvider).clear();
-          context.pushNamed(location);
-        }
-    );
+    return isListMode
+        ? ListView.builder(
+      itemBuilder: (context, index) {
+        return Card(
+          child: ListTile(
+            leading: Image.asset(data[index].imageAsset),
+            title: Text(data[index].title),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () {
+              context.pushNamed(data[index].location);
+            },
+            tileColor: data[index].bgColor,
+          ),
+        );
+      },
+      itemCount: data.length,
+    )
+        : GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2),
+        itemBuilder: (_, index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Card(
+              //add shadow
+              color: data[index].bgColor,
+              elevation: 5,
+              child: Column(
+                children: [
+                  Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(data[index].imageAsset),
+                            fit: BoxFit.cover)),
+                  ),
+                  ListTile(
+                    title: Text(data[index].title),
+                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                    onTap: () {
+                      context.pushNamed(data[index].location);
+                    },
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+        itemCount: data.length);
   }
 }

@@ -1,67 +1,46 @@
+import 'package:app_with_riverpod/domain/domain.dart';
+import 'package:app_with_riverpod/presentation/providers/bloqueta/bloqueta_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app_with_riverpod/presentation/screens/widgets/widgets.dart';
 
 class BloquetaScreen extends StatelessWidget {
   const BloquetaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bloqueta'),
-      ),
+    return const Scaffold(
+      appBar: AppBarWidget(titleAppBar: "Bloqueta",),
       body: _BloquetaScreenView(),
     );
   }
 }
 
-class _BloquetaScreenView extends StatelessWidget {
+class _BloquetaScreenView extends ConsumerWidget {
   const _BloquetaScreenView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    //  final todos = ref.watch(todosProvider);
+    ref.watch(tipoBloquetaProvider);
+    final data = TipoBloquetaModel.generateTipoBloqueta();
 
-    return ListView(
-      children: const [
-
-        _CustomListTile(
-            title: 'P7',
-            location: 'bloqueta1'),
-
-        _CustomListTile(
-            title: 'P10',
-            location: 'bloqueta1'),
-
-        _CustomListTile(
-            title: 'P12',
-            location: 'bloqueta1'),
-
-      ],
-    );
-  }
-}
-
-class _CustomListTile extends StatelessWidget {
-  final String title;
-  final String location;
-
-  const _CustomListTile({
-    required this.title,
-    required this.location,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        title: Text(title),
-        leading: Image.asset('assets/images/perfil.png'),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded),
-        onTap: () {
-          //    ref.read(todosProvider).clear();
-          context.pushNamed(location);
-        }
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return Card(
+          child: ListTile(
+            leading: Image.asset(data[index].imageAsset),
+            title: Text(data[index].title),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () {
+              ref.read(tipoBloquetaProvider.notifier).selectBloqueta(data[index].title);
+              context.pushNamed(data[index].location);
+            },
+          ),
+        );
+      },
+      itemCount: data.length,
     );
   }
 }

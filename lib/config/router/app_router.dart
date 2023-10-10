@@ -101,16 +101,12 @@ GoRouter appRouter(AppRouterRef ref) {
                         path: 'falso-piso',
                         name: 'falso-piso',
                         builder: (context, state) => const DatosPisosScreen(),
-                        routes: [
-                        ]
                       ),
                       GoRoute(
                         parentNavigatorKey: _rootNavigator,
                         path: 'contrapiso',
                         name: 'contrapiso',
                         builder: (context, state) => const DatosPisosScreen(),
-                        routes: [
-                        ]
                       ),
                       GoRoute(
                         parentNavigatorKey: _rootNavigator,

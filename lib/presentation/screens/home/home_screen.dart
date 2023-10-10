@@ -14,13 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Riverpod Providers'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.nightlight),
-            padding: EdgeInsets.only(right: 20),)
-        ],
+        title: const Text('Riverpod App'),
       ),
       body: childView,
       bottomNavigationBar: const CustomBottomNavigation(),

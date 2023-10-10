@@ -18,7 +18,7 @@ class MyApp extends ConsumerWidget {
     final isDarkMode = ref.watch(darkModeProvider);
 
     return MaterialApp.router(
-      title: 'Riverpod Providers',
+      title: 'Riverpod App',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
       theme: AppTheme( isDarkmode: isDarkMode ).getTheme(),

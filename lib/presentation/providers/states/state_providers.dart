@@ -31,3 +31,13 @@ class Dropdown extends _$Dropdown {
     state = choice;
   }
 }
+
+@riverpod
+class ListMode extends _$ListMode {
+  @override
+  bool build() => false;
+
+  void toggleListMode() {
+    state = !state;
+  }
+}

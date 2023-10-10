@@ -48,5 +48,19 @@ final dropdownProvider = AutoDisposeNotifierProvider<Dropdown, String>.internal(
 );
 
 typedef _$Dropdown = AutoDisposeNotifier<String>;
+String _$listModeHash() => r'b0cdccf6116127d9782e84d5f6958787a14499f7';
+
+/// See also [ListMode].
+@ProviderFor(ListMode)
+final listModeProvider = AutoDisposeNotifierProvider<ListMode, bool>.internal(
+  ListMode.new,
+  name: r'listModeProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$listModeHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ListMode = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

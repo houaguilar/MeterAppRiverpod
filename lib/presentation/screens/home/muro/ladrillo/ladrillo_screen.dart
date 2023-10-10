@@ -1,4 +1,8 @@
+import 'package:app_with_riverpod/domain/domain.dart';
+import 'package:app_with_riverpod/presentation/providers/ladrillo/ladrillo_providers.dart';
+import 'package:app_with_riverpod/presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class LadrilloScreen extends StatelessWidget {
@@ -6,63 +10,41 @@ class LadrilloScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Ladrillo'),
-      ),
+    return const Scaffold(
+      appBar: AppBarWidget(titleAppBar: 'Ladrillo',),
       body: _LadrilloScreenView(),
     );
   }
 }
 
-class _LadrilloScreenView extends StatelessWidget {
+class _LadrilloScreenView extends ConsumerWidget {
   const _LadrilloScreenView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(tipoLadrilloProvider);
+    final data = TipoLadrilloModel.generateTipoLadrillo();
 
-    //  final todos = ref.watch(todosProvider);
-
-    return ListView(
-      children: const [
-
-        _CustomListTile(
-            title: 'Ladrillo 1',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 2',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 3',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 4',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 5',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 6',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 7',
-            location: 'ladrillo1'),
-
-        _CustomListTile(
-            title: 'Ladrillo 8',
-            location: 'ladrillo1'),
-      ],
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return Card(
+          child: ListTile(
+            leading: Image.asset(data[index].imageAsset),
+            title: Text(data[index].title),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () {
+              ref.read(tipoLadrilloProvider.notifier).selectLadrillo(data[index].title);
+              context.pushNamed(data[index].location);
+            },
+          ),
+        );
+      },
+      itemCount: data.length,
     );
   }
 }
 
-class _CustomListTile extends StatelessWidget {
+class _CustomListTile extends ConsumerWidget {
   final String title;
   final String location;
 
@@ -72,15 +54,22 @@ class _CustomListTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        title: Text(title),
-        leading: Image.asset('assets/images/perfil.png'),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded),
-        onTap: () {
-          //    ref.read(todosProvider).clear();
-          context.pushNamed(location);
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return Card(
+          child: ListTile(
+              title: Text(title),
+              leading: Image.asset('assets/images/perfil.png'),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded),
+              onTap: () {
+                ref.read(tipoLadrilloProvider.notifier).selectLadrillo(title);
+                context.pushNamed(location);
+              }
+          ),
+        );
+      },
+      itemCount: 8,
     );
   }
 }

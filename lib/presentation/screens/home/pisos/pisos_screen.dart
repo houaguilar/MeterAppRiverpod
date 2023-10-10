@@ -1,5 +1,9 @@
+import 'package:app_with_riverpod/presentation/providers/pisos/pisos_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../widgets/widgets.dart';
 
 class PisosScreen extends StatelessWidget {
   const PisosScreen({super.key});
@@ -7,36 +11,51 @@ class PisosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pisos'),
-      ),
-      body: const _PisosView(),
+    return const Scaffold(
+      appBar: AppBarWidget(titleAppBar: "Pisos",),
+      body: _PisosView(),
     );
   }
 }
 
-class _PisosView extends StatelessWidget {
+class _PisosView extends ConsumerWidget {
   const _PisosView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    ref.watch(tipoPisoProvider);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text('Que vas a construir ?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-          MaterialButton(
+          const SizedBox(height: 15,),
+          ElevatedButton(
             onPressed: () {
+              ref.read(tipoPisoProvider.notifier).selectPiso('falso');
               context.pushNamed('falso-piso');
             },
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
+            ),
             child: const Text('FALSO PISO'),
           ),
-          MaterialButton(
+          const SizedBox(height: 10,),
+          ElevatedButton(
             onPressed: () {
+              ref.read(tipoPisoProvider.notifier).selectPiso('contrapiso');
               context.pushNamed('contrapiso');
             },
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
+            ),
             child: const Text('CONTRAPISO'),
           ),
         ],

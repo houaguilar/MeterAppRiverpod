@@ -1,3 +1,4 @@
+import 'package:app_with_riverpod/presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,11 +8,9 @@ class MuroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Muro'),
-      ),
-      body: const _MuroView(),
+    return const Scaffold(
+      appBar: AppBarWidget(titleAppBar: 'Muro',),
+      body: _MuroView(),
     );
   }
 }
@@ -27,17 +26,29 @@ class _MuroView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text('Que material usarás:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-          MaterialButton(
+          const SizedBox(height: 15,),
+          ElevatedButton(
             onPressed: () {
               context.pushNamed('ladrillo');
             },
-            child: const Text('LADRILLO'),
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
+            ),
+            child: const Text("LADRILLO"),
           ),
-          MaterialButton(
+          const SizedBox(height: 10,),
+          ElevatedButton(
             onPressed: () {
               context.pushNamed('bloqueta');
             },
-            child: const Text('BLOQUETA'),
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                )
+            ),
+            child: const Text("BLOQUETA"),
           ),
         ],
       ),
