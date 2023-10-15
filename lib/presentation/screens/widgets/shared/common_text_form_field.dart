@@ -30,6 +30,7 @@ class CommonTextFormField extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: double.infinity),
                 child: TextFormField(
+                  scrollPadding: EdgeInsets.only(bottom: 300),
                   controller: controller,
                   onChanged: (value) {
                     value = controller.text;

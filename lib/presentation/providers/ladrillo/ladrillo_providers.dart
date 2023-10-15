@@ -16,6 +16,36 @@ class TipoLadrillo extends _$TipoLadrillo {
 }
 
 @riverpod
+class CantidadArenaLadrillo extends _$CantidadArenaLadrillo {
+  @override
+  String build() => '';
+
+  void arena(String name) {
+    state = name;
+  }
+}
+
+@riverpod
+class CantidadCementoLadrillo extends _$CantidadCementoLadrillo {
+  @override
+  String build() => '';
+
+  void cemento(String name) {
+    state = name;
+  }
+}
+
+@riverpod
+class CantidadLadrillo extends _$CantidadLadrillo {
+  @override
+  String build() => '';
+
+  void ladrillo(String name) {
+    state = name;
+  }
+}
+
+@riverpod
 class LadrilloResult extends _$LadrilloResult {
 
   @override
@@ -36,6 +66,35 @@ class LadrilloResult extends _$LadrilloResult {
   void clearList() {
     state.clear();
   }
+}
+
+@riverpod
+List<double> areaLadrillo(AreaLadrilloRef ref) {
+  final ladrillos = ref.watch( ladrilloResultProvider );
+
+  return ladrillos.map((e) => double.parse(e.largo) * double.parse(e.altura)).toList();
+}
+
+@riverpod
+List<String> descriptionLadrillo(DescriptionLadrilloRef ref) {
+  final ladrillos = ref.watch( ladrilloResultProvider );
+
+  return ladrillos.map((e) => e.description).toList();
+}
+
+@riverpod
+String datosShareLadrillo(DatosShareLadrilloRef ref) {
+  final description = ref.watch(descriptionLadrilloProvider);
+  final area = ref.watch(areaLadrilloProvider);
+
+  String datos = "";
+  if (description.length == area.length) {
+    for (int i = 0; i < description.length; i++ ) {
+      datos += "* ${description[i]}: ${area[i]} m2\n";
+    }
+    datos = datos.substring(0,datos.length -2);
+  }
+  return datos;
 }
 
 @riverpod

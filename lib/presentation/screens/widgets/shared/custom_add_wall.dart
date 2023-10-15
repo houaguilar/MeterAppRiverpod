@@ -53,18 +53,23 @@ class CustomAddWall extends StatelessWidget {
                 formKey: formKey3, description: 'Altura', controller: alturaController, hintText: 'metros',),),
             Visibility(
               visible: buttonVisibility,
-              child: SizedBox(
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    onPressed: pressed,
-                    icon: const Icon(Icons.add),
-                    label: const Text("Añadir muro"),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        onPressed: pressed,
+                        icon: const Icon(Icons.add),
+                        label: const Text("Añadir muro"),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          )
+                        ),
                       )
-                    ),
-                  )
+                  ),
+                  const SizedBox(height: 200,)
+                ],
               ),
             ),
             const SizedBox(height: 30,)

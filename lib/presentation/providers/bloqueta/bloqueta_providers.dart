@@ -16,6 +16,36 @@ class TipoBloqueta extends _$TipoBloqueta {
 }
 
 @riverpod
+class CantidadArenaBloqueta extends _$CantidadArenaBloqueta {
+  @override
+  String build() => '';
+
+  void arena(String name) {
+    state = name;
+  }
+}
+
+@riverpod
+class CantidadCementoBloqueta extends _$CantidadCementoBloqueta {
+  @override
+  String build() => '';
+
+  void cemento(String name) {
+    state = name;
+  }
+}
+
+@riverpod
+class CantidadBloqueta extends _$CantidadBloqueta {
+  @override
+  String build() => '';
+
+  void bloqueta(String name) {
+    state = name;
+  }
+}
+
+@riverpod
 class BloquetaResult extends _$BloquetaResult {
 
   @override
@@ -35,10 +65,39 @@ class BloquetaResult extends _$BloquetaResult {
   void clearList() {
     state.clear();
   }
+}
 
-  void areaTotal() {
+@riverpod
+List<double> areaBloqueta(AreaBloquetaRef ref) {
+  final bloquetas = ref.watch( bloquetaResultProvider );
 
+ // if (bloquetas.isNotEmpty) {
+    return bloquetas.map((e) => double.parse(e.largo) * double.parse(e.altura)).toList();
+ // }
+}
+
+@riverpod
+List<String> descriptionBloqueta(DescriptionBloquetaRef ref) {
+  final bloqeutas = ref.watch( bloquetaResultProvider );
+
+ // if (bloqeutas.isNotEmpty) {
+    return bloqeutas.map((e) => e.description).toList();
+ // }
+}
+
+@riverpod
+String datosShareBloqueta(DatosShareBloquetaRef ref) {
+  final description = ref.watch(descriptionBloquetaProvider);
+  final area = ref.watch(areaBloquetaProvider);
+
+  String datos = "";
+  if (description.length == area.length) {
+    for (int i = 0; i < description.length; i++ ) {
+      datos += "* ${description[i]}: ${area[i]} m2\n";
+    }
+    datos = datos.substring(0,datos.length -2);
   }
+  return datos;
 }
 
 @riverpod

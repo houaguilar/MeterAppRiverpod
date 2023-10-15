@@ -26,7 +26,7 @@ GoRouter appRouter(AppRouterRef ref) {
                 path: '/',
                 name: 'home',
                 builder: (context, state) {
-                  return HomeView();
+                  return const HomeView();
                 },
                 routes: [
                   GoRoute(
@@ -51,7 +51,15 @@ GoRouter appRouter(AppRouterRef ref) {
                                 parentNavigatorKey: _rootNavigator,
                                 path: 'ladrillo-results',
                                 name: 'ladrillo_results',
-                                builder: (context, state) => ResultLadrilloScreen(),
+                                builder: (context, state) => const ResultLadrilloScreen(),
+                                routes: [
+                                  GoRoute(
+                                    parentNavigatorKey: _rootNavigator,
+                                    path: 'ladrillo-pdf',
+                                    name: 'ladrillo-pdf',
+                                    builder: (context, state) => const PreviewScreen(),
+                                  )
+                                ]
                               )
                             ]
                           )
@@ -74,6 +82,14 @@ GoRouter appRouter(AppRouterRef ref) {
                                 path: 'bloqueta-results',
                                 name: 'bloqueta_results',
                                 builder: (context, state) => const ResultLadrilloScreen(),
+                                routes: [
+                                  GoRoute(
+                                    parentNavigatorKey: _rootNavigator,
+                                    path: 'bloqueta-pdf',
+                                    name: 'bloqueta-pdf',
+                                    builder: (context, state) => const PreviewScreen(),
+                                  )
+                                ]
                               )
                             ]
                           )
@@ -113,7 +129,15 @@ GoRouter appRouter(AppRouterRef ref) {
                         path: 'pisos_results',
                         name: 'pisos_results',
                         builder: (context, state) => const ResultPisosScreen(),
-                      )
+                        routes: [
+                          GoRoute(
+                            parentNavigatorKey: _rootNavigator,
+                            path: 'pisos-pdf',
+                            name: 'pisos-pdf',
+                            builder: (context, state) => const PreviewPisosScreen(),
+                          ),
+                        ]
+                      ),
                     ]
                   ),
                   GoRoute(

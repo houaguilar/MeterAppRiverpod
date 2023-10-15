@@ -4,6 +4,7 @@ import 'package:app_with_riverpod/presentation/screens/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ResultPisosScreen extends ConsumerWidget {
   const ResultPisosScreen({super.key});
@@ -22,8 +23,9 @@ class ResultPisosScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              onPressed: ()  {
-                //   await Share.share("shareText");
+              tooltip: 'Compartir',
+              onPressed: () async {
+                  await Share.share(_shareContent(ref));
               },
               heroTag: "btnShare",
               child: const Icon(Icons.ios_share_rounded),
@@ -50,6 +52,25 @@ class ResultPisosScreen extends ConsumerWidget {
       ),
     );
   }
+
+  String _shareContent(WidgetRef ref) {
+    final listaPisos = ref.watch(pisosResultProvider);
+
+    String cantidadPiedraChancadaToString = cantidadPiedraChancada(listaPisos).toStringAsFixed(2);
+    String cantidadArenaToString = cantidadArenaGruesa(listaPisos).toStringAsFixed(2);
+    String cantidadCementoToString = cantidadCementoPisos(listaPisos).ceilToDouble().toString();
+
+    String datosMetrado = 'DATOS METRADO';
+    String listaMateriales = 'LISTA DE MATERIALES';
+
+    if (listaPisos.isNotEmpty) {
+      final datosLadrillo = ref.watch(datosSharePisosProvider);
+      final shareText = '$datosMetrado \n$datosLadrillo \n-------------\n$listaMateriales \n*Arena gruesa: $cantidadArenaToString m3 \n*Cemento: $cantidadCementoToString bls \n${listaPisos.first.tipo == 'contrapiso' ? '*Piedra chancada: $cantidadPiedraChancadaToString m3' : ''}';
+      return shareText;
+    } else {
+      return 'Error';
+    }
+  }
 }
 
 class _ResultPisosScreenView extends ConsumerWidget {
@@ -58,6 +79,11 @@ class _ResultPisosScreenView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
+    final listaPisos = ref.watch(pisosResultProvider);
+    String cantidadPiedraChancadaToString = cantidadPiedraChancada(listaPisos).toStringAsFixed(2);
+    String cantidadArenaToString = cantidadArenaGruesa(listaPisos).toStringAsFixed(2);
+    String cantidadCementoToString = cantidadCementoPisos(listaPisos).ceilToDouble().toString();
+
     return Column(
       children: [
         const Expanded(
@@ -65,7 +91,19 @@ class _ResultPisosScreenView extends ConsumerWidget {
         ),
         MaterialButton(
           onPressed: () {
-            context.goNamed('home');
+            ref.watch(cantidadArenaPisosProvider);
+            ref.watch(cantidadCementoPisosProvider);
+            ref.watch(cantidadPiedraChancadaProvider);
+
+            if (listaPisos.first.tipo == 'contrapiso') {
+              ref.read(cantidadArenaPisosProvider.notifier).arena(cantidadArenaToString);
+              ref.read(cantidadCementoPisosProvider.notifier).cemento(cantidadCementoToString);
+            } else {
+              ref.read(cantidadArenaPisosProvider.notifier).arena(cantidadArenaToString);
+              ref.read(cantidadCementoPisosProvider.notifier).cemento(cantidadCementoToString);
+              ref.read(cantidadPiedraChancadaProvider.notifier).piedra(cantidadPiedraChancadaToString);
+            }
+            context.goNamed('pisos-pdf');
           },
           color: const Color(0x00ecf0f1),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -98,79 +136,9 @@ class _PisosContainer extends ConsumerWidget {
       return double.parse(results[index].largo) * double.parse(results[index].altura) * double.parse(results[index].ancho);
     }
 
-    double calcularCantidadPiedraChancada(String tipoPiso, double largo, double altura, double ancho){
-      switch (tipoPiso) {
-        case 'falso':
-          return largo * altura * ancho * 0.72 * 0.05;
-        default:
-          return 0;
-      }
-    }
-
-    double calcularCantidadArenaGruesa(String tipoPiso, double largo, double altura, double ancho) {
-      switch (tipoPiso) {
-        case 'falso':
-          return largo * altura * ancho * 0.72 * 0.05;
-        case 'contrapiso':
-          return largo * altura * ancho * 1 * 0.05;
-        default:
-          return 0;
-      }
-    }
-
-    double calcularCantidadCemento(String tipoPiso, double largo, double altura, double ancho) {
-      switch (tipoPiso) {
-        case 'falso':
-          return largo * altura * ancho * 7.06 * 0.05;
-        case 'contrapiso':
-          return largo * altura * ancho * 7.4 * 0.05;
-        default:
-          return 0;
-      }
-    }
-
-    double cantidadPiedraChancada() {
-      double sumaDePiedras = 0.0;
-      for (PisosModel piso in results) {
-        double largo = double.parse(piso.largo);
-        double altura = double.parse(piso.altura);
-        double ancho = double.parse(piso.largo);
-        sumaDePiedras += calcularCantidadPiedraChancada(piso.tipo, largo, altura, ancho);
-      }
-      return sumaDePiedras;
-    }
-
-    double cantidadArenaGruesa() {
-      double sumaDeArena = 0.0;
-      for (PisosModel piso in results) {
-        double largo = double.parse(piso.largo);
-        double altura = double.parse(piso.altura);
-        double ancho = double.parse(piso.largo);
-        sumaDeArena += calcularCantidadArenaGruesa(piso.tipo, largo, altura, ancho);
-        print(largo);
-        print(ancho);
-        print(altura);
-        print(sumaDeArena);
-        print(piso.tipo);
-      }
-      return sumaDeArena;
-    }
-
-    double cantidadCemento() {
-      double sumaDeCemento = 0.0;
-      for (PisosModel piso in results) {
-        double largo = double.parse(piso.largo);
-        double altura = double.parse(piso.altura);
-        double ancho = double.parse(piso.largo);
-        sumaDeCemento += calcularCantidadCemento(piso.tipo, largo, altura, ancho);
-      }
-      return sumaDeCemento;
-    }
-
-
-    String cantidadPiedraChancadaToString = cantidadPiedraChancada().toStringAsFixed(2);
-    String cantidadArenaToString = cantidadArenaGruesa().toStringAsFixed(2);
-    String cantidadCementoToString = cantidadCemento().ceilToDouble().toString();
+    String cantidadPiedraChancadaToString = cantidadPiedraChancada(results).toStringAsFixed(2);
+    String cantidadArenaToString = cantidadArenaGruesa(results).toStringAsFixed(2);
+    String cantidadCementoToString = cantidadCementoPisos(results).ceilToDouble().toString();
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -198,4 +166,68 @@ class _PisosContainer extends ConsumerWidget {
       ),
     );
   }
+}
+
+double calcularCantidadPiedraChancada(String tipoPiso, double largo, double altura, double ancho){
+  switch (tipoPiso) {
+    case 'falso':
+      return largo * altura * ancho * 0.72 * 0.05;
+    default:
+      return 0;
+  }
+}
+
+double calcularCantidadArenaGruesa(String tipoPiso, double largo, double altura, double ancho) {
+  switch (tipoPiso) {
+    case 'falso':
+      return largo * altura * ancho * 0.72 * 0.05;
+    case 'contrapiso':
+      return largo * altura * ancho * 1 * 0.05;
+    default:
+      return 0;
+  }
+}
+
+double calcularCantidadCementoPisos(String tipoPiso, double largo, double altura, double ancho) {
+  switch (tipoPiso) {
+    case 'falso':
+      return largo * altura * ancho * 7.06 * 0.05;
+    case 'contrapiso':
+      return largo * altura * ancho * 7.4 * 0.05;
+    default:
+      return 0;
+  }
+}
+
+double cantidadPiedraChancada(List<PisosModel> results) {
+  double sumaDePiedras = 0.0;
+  for (PisosModel piso in results) {
+    double largo = double.parse(piso.largo);
+    double altura = double.parse(piso.altura);
+    double ancho = double.parse(piso.largo);
+    sumaDePiedras += calcularCantidadPiedraChancada(piso.tipo, largo, altura, ancho);
+  }
+  return sumaDePiedras;
+}
+
+double cantidadArenaGruesa(List<PisosModel> results) {
+  double sumaDeArena = 0.0;
+  for (PisosModel piso in results) {
+    double largo = double.parse(piso.largo);
+    double altura = double.parse(piso.altura);
+    double ancho = double.parse(piso.largo);
+    sumaDeArena += calcularCantidadArenaGruesa(piso.tipo, largo, altura, ancho);
+  }
+  return sumaDeArena;
+}
+
+double cantidadCementoPisos(List<PisosModel> results) {
+  double sumaDeCemento = 0.0;
+  for (PisosModel piso in results) {
+    double largo = double.parse(piso.largo);
+    double altura = double.parse(piso.altura);
+    double ancho = double.parse(piso.largo);
+    sumaDeCemento += calcularCantidadCementoPisos(piso.tipo, largo, altura, ancho);
+  }
+  return sumaDeCemento;
 }

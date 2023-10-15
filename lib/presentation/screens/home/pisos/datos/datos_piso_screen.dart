@@ -178,23 +178,28 @@ class _DatosPisosScreenState extends ConsumerState<DatosPisosScreen> {
                         formKey: _formKeyAlturaPiso1, description: 'Altura' ,controller: _alturaPiso1Controller, hintText: 'metros',),),
                     Visibility(
                       visible: addPiso1,
-                      child: Container(
-                        alignment: AlignmentDirectional.center,
-                        child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                ref.read(addPiso1Provider.notifier).toggleAddPiso();
-                              },
-                              icon: const Icon(Icons.add),
-                              label: const Text("Añadir piso"),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)
-                                  )
-                              ),
-                            )
-                        ),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: SizedBox(
+                                height: 50,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    ref.read(addPiso1Provider.notifier).toggleAddPiso();
+                                  },
+                                  icon: const Icon(Icons.add),
+                                  label: const Text("Añadir piso"),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20)
+                                      )
+                                  ),
+                                )
+                            ),
+                          ),
+                          const SizedBox(height: 200,)
+                        ],
                       ),
                     ),
                     CustomAddFloor(formKey1: _formKeyDescriptionPiso2, formKey2: _formKeyLargoPiso2, formKey3: _formKeyAnchoPiso2, formKey4: _formKeyAlturaPiso2, visibility: addPiso1, piso: "Piso 2", descriptionController: _descriptionPiso2Controller, largoController: _largoPiso2Controller, anchoController: _anchoPiso2Controller, alturaController: _alturaPiso2Controller, buttonVisibility: addPiso2, pressed: () => ref.read(addPiso2Provider.notifier).toggleAddPiso(),),

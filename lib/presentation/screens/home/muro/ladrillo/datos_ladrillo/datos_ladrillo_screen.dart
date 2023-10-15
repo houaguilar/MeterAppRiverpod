@@ -19,9 +19,11 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
   List<String> asentadosKingkong = ["soga","cabeza","canto"];
   List<String> asentadosPandereta = ["soga","canto"];
 
+  final formKey = GlobalKey<FormState>();
+
   late String description;
   late String ladrillo;
-  late String asentado;
+  String asentado = "";
   late String largo;
   late String altura;
 
@@ -168,23 +170,28 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
                         formKey: _formKeyAlturaMuro1, description: 'Altura' ,controller: _alturaMuro1Controller, hintText: 'metros',),),
                     Visibility(
                       visible: addMuro1,
-                      child: Container(
-                        alignment: AlignmentDirectional.center,
-                        child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                ref.read(addMuroLadrillo1Provider.notifier).toggleAddMuro();
-                              },
-                              icon: const Icon(Icons.add),
-                              label: const Text("Añadir muro"),
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)
-                                  )
-                              ),
-                            )
-                        ),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.center,
+                            child: SizedBox(
+                                height: 50,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    ref.read(addMuroLadrillo1Provider.notifier).toggleAddMuro();
+                                  },
+                                  icon: const Icon(Icons.add),
+                                  label: const Text("Añadir muro"),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20)
+                                      )
+                                  ),
+                                )
+                            ),
+                          ),
+                          const SizedBox(height: 200,)
+                        ],
                       ),
                     ),
                     CustomAddWall(formKey1: _formKeyDescriptionMuro2, formKey2: _formKeyLargoMuro2, formKey3: _formKeyAlturaMuro2, visibility: addMuro1, muro: "Muro 2", descriptionController: _descriptionMuro2Controller, largoController: _largoMuro2Controller, alturaController: _alturaMuro2Controller, buttonVisibility: addMuro2, pressed: () => ref.read(addMuroLadrillo2Provider.notifier).toggleAddMuro(),),
@@ -203,91 +210,232 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
                 final FormState formDescription1 = _formKeyDescriptionMuro1.currentState!;
                 final FormState formLargo1 = _formKeyLargoMuro1.currentState!;
                 final FormState formAltura1 = _formKeyAlturaMuro1.currentState!;
+                final FormState formButton = formKey.currentState!;
 
                 var datosLadrillo = ref.read(ladrilloResultProvider.notifier);
                 ladrillo = tipoLadrillo;
 
-                if (formDescription1.validate() && formLargo1.validate() && formAltura1.validate()) {
-                  datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                  if (addMuro1) {
-                    context.pushNamed('ladrillo_results');
-                  } else {
-                    ref.read(ladrilloResultProvider.notifier).clearList();
-                    final FormState formDescription2 = _formKeyDescriptionMuro2.currentState!;
-                    final FormState formLargo2 = _formKeyLargoMuro2.currentState!;
-                    final FormState formAltura2 = _formKeyAlturaMuro2.currentState!;
+                if (formButton.validate()) {
+                  print(asentado);
+                  if (formDescription1.validate() && formLargo1.validate() &&
+                      formAltura1.validate()) {
+                    datosLadrillo.createLadrillo(
+                        _descriptionMuro1Controller.text, ladrillo, asentado,
+                        _largoMuro1Controller.text,
+                        _alturaMuro1Controller.text);
+                    if (addMuro1) {
+                      context.pushNamed('ladrillo_results');
+                    } else {
+                      ref.read(ladrilloResultProvider.notifier).clearList();
+                      final FormState formDescription2 = _formKeyDescriptionMuro2
+                          .currentState!;
+                      final FormState formLargo2 = _formKeyLargoMuro2
+                          .currentState!;
+                      final FormState formAltura2 = _formKeyAlturaMuro2
+                          .currentState!;
 
-                    if (formDescription2.validate() && formLargo2.validate() && formAltura2.validate()) {
-                      datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                      datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                      if (addMuro2) {
-                        context.pushNamed('ladrillo_results');
-                      } else {
-                        ref.read(ladrilloResultProvider.notifier).clearList();
-                        final FormState formDescription3 = _formKeyDescriptionMuro3.currentState!;
-                        final FormState formLargo3 = _formKeyLargoMuro3.currentState!;
-                        final FormState formAltura3 = _formKeyAlturaMuro3.currentState!;
+                      if (formDescription2.validate() &&
+                          formLargo2.validate() && formAltura2.validate()) {
+                        datosLadrillo.createLadrillo(
+                            _descriptionMuro1Controller.text, ladrillo,
+                            asentado, _largoMuro1Controller.text,
+                            _alturaMuro1Controller.text);
+                        datosLadrillo.createLadrillo(
+                            _descriptionMuro2Controller.text, ladrillo,
+                            asentado, _largoMuro2Controller.text,
+                            _alturaMuro2Controller.text);
+                        if (addMuro2) {
+                          context.pushNamed('ladrillo_results');
+                        } else {
+                          ref.read(ladrilloResultProvider.notifier).clearList();
+                          final FormState formDescription3 = _formKeyDescriptionMuro3
+                              .currentState!;
+                          final FormState formLargo3 = _formKeyLargoMuro3
+                              .currentState!;
+                          final FormState formAltura3 = _formKeyAlturaMuro3
+                              .currentState!;
 
-                        if (formDescription3.validate() && formLargo3.validate() && formAltura3.validate()) {
-                          datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                          datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                          datosLadrillo.createLadrillo(_descriptionMuro3Controller.text, ladrillo, asentado, _largoMuro3Controller.text, _alturaMuro3Controller.text);
-                          if (addMuro3) {
-                            context.pushNamed('ladrillo_results');
-                          } else {
-                            ref.read(ladrilloResultProvider.notifier).clearList();
-                            final FormState formDescription4 = _formKeyDescriptionMuro4.currentState!;
-                            final FormState formLargo4 = _formKeyLargoMuro4.currentState!;
-                            final FormState formAltura4 = _formKeyAlturaMuro4.currentState!;
-                            if (formDescription4.validate() && formLargo4.validate() && formAltura4.validate()) {
-                              datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                              datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                              datosLadrillo.createLadrillo(_descriptionMuro3Controller.text, ladrillo, asentado, _largoMuro3Controller.text, _alturaMuro3Controller.text);
-                              datosLadrillo.createLadrillo(_descriptionMuro4Controller.text, ladrillo, asentado, _largoMuro4Controller.text, _alturaMuro4Controller.text);
-                              if (addMuro4) {
-                                context.pushNamed('ladrillo_results');
-                              } else {
-                                ref.read(ladrilloResultProvider.notifier).clearList();
-                                final FormState formDescription5 = _formKeyDescriptionMuro5.currentState!;
-                                final FormState formLargo5 = _formKeyLargoMuro5.currentState!;
-                                final FormState formAltura5 = _formKeyAlturaMuro5.currentState!;
-                                if (formDescription5.validate() && formLargo5.validate() && formAltura5.validate()) {
-                                  datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                                  datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                                  datosLadrillo.createLadrillo(_descriptionMuro3Controller.text, ladrillo, asentado, _largoMuro3Controller.text, _alturaMuro3Controller.text);
-                                  datosLadrillo.createLadrillo(_descriptionMuro4Controller.text, ladrillo, asentado, _largoMuro4Controller.text, _alturaMuro4Controller.text);
-                                  datosLadrillo.createLadrillo(_descriptionMuro5Controller.text, ladrillo, asentado, _largoMuro5Controller.text, _alturaMuro5Controller.text);
-                                  if (addMuro5) {
-                                    context.pushNamed('ladrillo_results');
-                                  } else {
-                                    ref.read(ladrilloResultProvider.notifier).clearList();
-                                    final FormState formDescription6 = _formKeyDescriptionMuro6.currentState!;
-                                    final FormState formLargo6 = _formKeyLargoMuro6.currentState!;
-                                    final FormState formAltura6 = _formKeyAlturaMuro6.currentState!;
-                                    if (formDescription6.validate() && formLargo6.validate() && formAltura6.validate()) {
-                                      datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                                      datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                                      datosLadrillo.createLadrillo(_descriptionMuro3Controller.text, ladrillo, asentado, _largoMuro3Controller.text, _alturaMuro3Controller.text);
-                                      datosLadrillo.createLadrillo(_descriptionMuro4Controller.text, ladrillo, asentado, _largoMuro4Controller.text, _alturaMuro4Controller.text);
-                                      datosLadrillo.createLadrillo(_descriptionMuro5Controller.text, ladrillo, asentado, _largoMuro5Controller.text, _alturaMuro5Controller.text);
-                                      datosLadrillo.createLadrillo(_descriptionMuro6Controller.text, ladrillo, asentado, _largoMuro6Controller.text, _alturaMuro6Controller.text);
-                                      if (addMuro6) {
-                                        context.pushNamed('ladrillo_results');
-                                      } else {
-                                        ref.read(ladrilloResultProvider.notifier).clearList();
-                                        final FormState formDescription7 = _formKeyDescriptionMuro7.currentState!;
-                                        final FormState formLargo7 = _formKeyLargoMuro7.currentState!;
-                                        final FormState formAltura7 = _formKeyAlturaMuro7.currentState!;
-                                        if (formDescription7.validate() && formLargo7.validate() && formAltura7.validate()) {
-                                          datosLadrillo.createLadrillo(_descriptionMuro1Controller.text, ladrillo, asentado, _largoMuro1Controller.text, _alturaMuro1Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro2Controller.text, ladrillo, asentado, _largoMuro2Controller.text, _alturaMuro2Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro3Controller.text, ladrillo, asentado, _largoMuro3Controller.text, _alturaMuro3Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro4Controller.text, ladrillo, asentado, _largoMuro4Controller.text, _alturaMuro4Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro5Controller.text, ladrillo, asentado, _largoMuro5Controller.text, _alturaMuro5Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro6Controller.text, ladrillo, asentado, _largoMuro6Controller.text, _alturaMuro6Controller.text);
-                                          datosLadrillo.createLadrillo(_descriptionMuro7Controller.text, ladrillo, asentado, _largoMuro7Controller.text, _alturaMuro7Controller.text);
-                                          if (addMuro7) {
-                                            context.pushNamed('ladrillo_results');
+                          if (formDescription3.validate() &&
+                              formLargo3.validate() && formAltura3.validate()) {
+                            datosLadrillo.createLadrillo(
+                                _descriptionMuro1Controller.text, ladrillo,
+                                asentado, _largoMuro1Controller.text,
+                                _alturaMuro1Controller.text);
+                            datosLadrillo.createLadrillo(
+                                _descriptionMuro2Controller.text, ladrillo,
+                                asentado, _largoMuro2Controller.text,
+                                _alturaMuro2Controller.text);
+                            datosLadrillo.createLadrillo(
+                                _descriptionMuro3Controller.text, ladrillo,
+                                asentado, _largoMuro3Controller.text,
+                                _alturaMuro3Controller.text);
+                            if (addMuro3) {
+                              context.pushNamed('ladrillo_results');
+                            } else {
+                              ref.read(ladrilloResultProvider.notifier)
+                                  .clearList();
+                              final FormState formDescription4 = _formKeyDescriptionMuro4
+                                  .currentState!;
+                              final FormState formLargo4 = _formKeyLargoMuro4
+                                  .currentState!;
+                              final FormState formAltura4 = _formKeyAlturaMuro4
+                                  .currentState!;
+                              if (formDescription4.validate() &&
+                                  formLargo4.validate() &&
+                                  formAltura4.validate()) {
+                                datosLadrillo.createLadrillo(
+                                    _descriptionMuro1Controller.text, ladrillo,
+                                    asentado, _largoMuro1Controller.text,
+                                    _alturaMuro1Controller.text);
+                                datosLadrillo.createLadrillo(
+                                    _descriptionMuro2Controller.text, ladrillo,
+                                    asentado, _largoMuro2Controller.text,
+                                    _alturaMuro2Controller.text);
+                                datosLadrillo.createLadrillo(
+                                    _descriptionMuro3Controller.text, ladrillo,
+                                    asentado, _largoMuro3Controller.text,
+                                    _alturaMuro3Controller.text);
+                                datosLadrillo.createLadrillo(
+                                    _descriptionMuro4Controller.text, ladrillo,
+                                    asentado, _largoMuro4Controller.text,
+                                    _alturaMuro4Controller.text);
+                                if (addMuro4) {
+                                  context.pushNamed('ladrillo_results');
+                                } else {
+                                  ref.read(ladrilloResultProvider.notifier)
+                                      .clearList();
+                                  final FormState formDescription5 = _formKeyDescriptionMuro5
+                                      .currentState!;
+                                  final FormState formLargo5 = _formKeyLargoMuro5
+                                      .currentState!;
+                                  final FormState formAltura5 = _formKeyAlturaMuro5
+                                      .currentState!;
+                                  if (formDescription5.validate() &&
+                                      formLargo5.validate() &&
+                                      formAltura5.validate()) {
+                                    datosLadrillo.createLadrillo(
+                                        _descriptionMuro1Controller.text,
+                                        ladrillo, asentado,
+                                        _largoMuro1Controller.text,
+                                        _alturaMuro1Controller.text);
+                                    datosLadrillo.createLadrillo(
+                                        _descriptionMuro2Controller.text,
+                                        ladrillo, asentado,
+                                        _largoMuro2Controller.text,
+                                        _alturaMuro2Controller.text);
+                                    datosLadrillo.createLadrillo(
+                                        _descriptionMuro3Controller.text,
+                                        ladrillo, asentado,
+                                        _largoMuro3Controller.text,
+                                        _alturaMuro3Controller.text);
+                                    datosLadrillo.createLadrillo(
+                                        _descriptionMuro4Controller.text,
+                                        ladrillo, asentado,
+                                        _largoMuro4Controller.text,
+                                        _alturaMuro4Controller.text);
+                                    datosLadrillo.createLadrillo(
+                                        _descriptionMuro5Controller.text,
+                                        ladrillo, asentado,
+                                        _largoMuro5Controller.text,
+                                        _alturaMuro5Controller.text);
+                                    if (addMuro5) {
+                                      context.pushNamed('ladrillo_results');
+                                    } else {
+                                      ref.read(ladrilloResultProvider.notifier)
+                                          .clearList();
+                                      final FormState formDescription6 = _formKeyDescriptionMuro6
+                                          .currentState!;
+                                      final FormState formLargo6 = _formKeyLargoMuro6
+                                          .currentState!;
+                                      final FormState formAltura6 = _formKeyAlturaMuro6
+                                          .currentState!;
+                                      if (formDescription6.validate() &&
+                                          formLargo6.validate() &&
+                                          formAltura6.validate()) {
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro1Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro1Controller.text,
+                                            _alturaMuro1Controller.text);
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro2Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro2Controller.text,
+                                            _alturaMuro2Controller.text);
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro3Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro3Controller.text,
+                                            _alturaMuro3Controller.text);
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro4Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro4Controller.text,
+                                            _alturaMuro4Controller.text);
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro5Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro5Controller.text,
+                                            _alturaMuro5Controller.text);
+                                        datosLadrillo.createLadrillo(
+                                            _descriptionMuro6Controller.text,
+                                            ladrillo, asentado,
+                                            _largoMuro6Controller.text,
+                                            _alturaMuro6Controller.text);
+                                        if (addMuro6) {
+                                          context.pushNamed('ladrillo_results');
+                                        } else {
+                                          ref.read(
+                                              ladrilloResultProvider.notifier)
+                                              .clearList();
+                                          final FormState formDescription7 = _formKeyDescriptionMuro7
+                                              .currentState!;
+                                          final FormState formLargo7 = _formKeyLargoMuro7
+                                              .currentState!;
+                                          final FormState formAltura7 = _formKeyAlturaMuro7
+                                              .currentState!;
+                                          if (formDescription7.validate() &&
+                                              formLargo7.validate() &&
+                                              formAltura7.validate()) {
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro1Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro1Controller.text,
+                                                _alturaMuro1Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro2Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro2Controller.text,
+                                                _alturaMuro2Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro3Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro3Controller.text,
+                                                _alturaMuro3Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro4Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro4Controller.text,
+                                                _alturaMuro4Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro5Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro5Controller.text,
+                                                _alturaMuro5Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro6Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro6Controller.text,
+                                                _alturaMuro6Controller.text);
+                                            datosLadrillo.createLadrillo(
+                                                _descriptionMuro7Controller
+                                                    .text, ladrillo, asentado,
+                                                _largoMuro7Controller.text,
+                                                _alturaMuro7Controller.text);
+                                            if (addMuro7) {
+                                              context.pushNamed(
+                                                  'ladrillo_results');
+                                            }
                                           }
                                         }
                                       }
@@ -300,8 +448,10 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
                         }
                       }
                     }
+                  } else {
+                    null;
                   }
-                }  else {
+                } else {
                   null;
                 }
                 /*var datosLadrillo = ref.read(ladrilloResultProvider.notifier);
@@ -356,27 +506,32 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
                   ),
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 150),
-                    child: DropdownButton(
-                      value: type == 'ladrillo' ? selectedValueLadrillo : selectedValueAsentado,
-                      items: typeList.map((e) => DropdownMenuItem(value: e,child: Text(e.toString()),)).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          switch (type) {
-                            case 'ladrillo':
-                              selectedValueLadrillo = value;
-                              ladrillo = selectedValueLadrillo!;
-                              selectedValueAsentado = null;
-                              break;
-                            case 'asentado':
-                              selectedValueAsentado = value;
-                              asentado = selectedValueAsentado!;
-                              break;
-                          }
-                        });
-                      },
-                      hint: const Text("Selecionar"),
-                      underline: const SizedBox(),
-                      isExpanded: true,
+                    child: Form(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: DropdownButtonFormField(
+                        value: type == 'ladrillo' ? selectedValueLadrillo : selectedValueAsentado,
+                        items: typeList.map((e) => DropdownMenuItem(value: e,child: Text(e.toString()),)).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            switch (type) {
+                              case 'ladrillo':
+                                selectedValueLadrillo = value;
+                                ladrillo = selectedValueLadrillo!;
+                                selectedValueAsentado = null;
+                                break;
+                              case 'asentado':
+                                selectedValueAsentado = value;
+                                asentado = selectedValueAsentado!;
+                                break;
+                            }
+                          });
+                        },
+                        validator: (value) => value == null ? 'campo requerido' : null,
+                        hint: const Text("Selecionar"),
+                   //   underline: const SizedBox(),
+                        isExpanded: true,
+                      ),
                     ),
                   ),
                 )
