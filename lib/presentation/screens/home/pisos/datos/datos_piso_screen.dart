@@ -16,40 +16,6 @@ class DatosPisosScreen extends ConsumerStatefulWidget {
 class _DatosPisosScreenState extends ConsumerState<DatosPisosScreen> {
 
   late String piso;
-  late String description;
-  late String largo;
-  late String ancho;
-  late String altura;
-
-  late String description2;
-  late String largo2;
-  late String ancho2;
-  late String altura2;
-
-  late String description3;
-  late String largo3;
-  late String ancho3;
-  late String altura3;
-
-  late String description4;
-  late String largo4;
-  late String ancho4;
-  late String altura4;
-
-  late String description5;
-  late String largo5;
-  late String ancho5;
-  late String altura5;
-
-  late String description6;
-  late String largo6;
-  late String ancho6;
-  late String altura6;
-
-  late String description7;
-  late String largo7;
-  late String ancho7;
-  late String altura7;
 
   // GlobalKey
   final GlobalKey<FormState> _formKeyDescriptionPiso1 = GlobalKey<FormState>();

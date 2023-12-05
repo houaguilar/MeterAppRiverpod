@@ -12,14 +12,43 @@ class HomeView extends ConsumerWidget {
 
     final isListMode = ref.watch(listModeProvider);
 
+    getDevice() {
+      return MediaQuery.of(context).size.width <= 800 ? "Mobile" : "Web";
+    }
+
     return Scaffold(
-      body: Container(
+      body: getDevice() == "Mobile" ? Container(
         padding: const EdgeInsets.all(10),
         child: const Column(
           children: [
             SizedBox(height: 20,),
 
             Expanded(child: _HomeScreenView()),
+          ],
+        ),
+      )
+      : Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const SizedBox(height: 20,),
+
+            Expanded(
+              child: Container(
+                alignment: AlignmentDirectional.center,
+                child: const Row(
+                  children: [
+                    Expanded(child: SizedBox()),
+                    SizedBox(
+                        width: 800,
+                        height: double.infinity,
+                        child: _HomeScreenView(),
+                    ),
+                    Expanded(child: SizedBox()),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

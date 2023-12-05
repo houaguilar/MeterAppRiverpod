@@ -15,35 +15,7 @@ class DatosBloquetaScreen extends ConsumerStatefulWidget {
 
 class _DatosBloquetaScreenState extends ConsumerState<DatosBloquetaScreen> {
 
-  List<String> bloquetas = ["P7", "P10", 'P12'];
-
   late String bloqueta;
-  late String largo;
-  late String altura;
-
-  late String description2;
-  late String largo2;
-  late String altura2;
-
-  late String description3;
-  late String largo3;
-  late String altura3;
-
-  late String description4;
-  late String largo4;
-  late String altura4;
-
-  late String description5;
-  late String largo5;
-  late String altura5;
-
-  late String description6;
-  late String largo6;
-  late String altura6;
-
-  late String description7;
-  late String largo7;
-  late String altura7;
 
   String? selectedValueBloqueta;
 
@@ -139,12 +111,6 @@ class _DatosBloquetaScreenState extends ConsumerState<DatosBloquetaScreen> {
                         ),
                       ),
                     ),
-                    /*SizedBox(
-                      child: Container(
-                          child: _contentDropdownButton('bloqueta', 'Tipo de bloqueta', bloquetas)
-                        //  child: ContentDropdownButton(type: 'ladrillo', description: 'Tipo de ladrillo', typeList: ladrillos, ladrillo: ladrillo,),
-                      ),
-                    ),*/
                     Container(
                         alignment: AlignmentDirectional.center,
                         padding: const EdgeInsets.all(10),

@@ -22,11 +22,20 @@ class PreviewScreen extends ConsumerWidget {
     final cementoBloqueta = ref.watch(cantidadCementoBloquetaProvider);
     final cantidadBloqueta = ref.watch(cantidadBloquetaProvider);
 
+    void _showSharedToast(BuildContext context) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Document shared successfully'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('PDF Preview'),
+        title: const Text('PDF Preview'),
       ),
       body: PdfPreview(
+        onShared: _showSharedToast,
         build: (context) => makePdfMuro(
             ladrillos,
             bloquetas,

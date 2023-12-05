@@ -5,7 +5,7 @@ import 'package:app_with_riverpod/presentation/providers/providers.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  return runApp(ProviderScope(child: MyApp()));
+  return runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {

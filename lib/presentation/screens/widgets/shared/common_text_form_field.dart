@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class CommonTextFormField extends StatelessWidget {
-  const CommonTextFormField({
+  const CommonTextFormField({super.key, 
     required this.formKey,
     required this.description,
     required this.controller,
@@ -26,11 +26,11 @@ class CommonTextFormField extends StatelessWidget {
           children: [
             Text(description),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: double.infinity),
                 child: TextFormField(
-                  scrollPadding: EdgeInsets.only(bottom: 300),
+                  scrollPadding: const EdgeInsets.only(bottom: 300),
                   controller: controller,
                   onChanged: (value) {
                     value = controller.text;

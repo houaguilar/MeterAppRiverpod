@@ -24,32 +24,6 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
   late String description;
   late String ladrillo;
   String asentado = "";
-  late String largo;
-  late String altura;
-
-  late String description2;
-  late String largo2;
-  late String altura2;
-
-  late String description3;
-  late String largo3;
-  late String altura3;
-
-  late String description4;
-  late String largo4;
-  late String altura4;
-
-  late String description5;
-  late String largo5;
-  late String altura5;
-
-  late String description6;
-  late String largo6;
-  late String altura6;
-
-  late String description7;
-  late String largo7;
-  late String altura7;
 
   String? selectedValueLadrillo;
   String? selectedValueAsentado;
@@ -216,7 +190,6 @@ class _DatosLadrilloScreenState extends ConsumerState<DatosLadrilloScreen> {
                 ladrillo = tipoLadrillo;
 
                 if (formButton.validate()) {
-                  print(asentado);
                   if (formDescription1.validate() && formLargo1.validate() &&
                       formAltura1.validate()) {
                     datosLadrillo.createLadrillo(

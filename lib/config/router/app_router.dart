@@ -1,4 +1,3 @@
-import 'package:app_with_riverpod/presentation/screens/perfil/perfil_screen.dart';
 import 'package:app_with_riverpod/presentation/views/views.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -102,7 +101,7 @@ GoRouter appRouter(AppRouterRef ref) {
                     path: 'columna',
                     name: 'columna',
                     builder: (context, state) => const ColumnaScreen(),
-                    routes: [
+                    routes: const [
                       
                     ]
                   ),
@@ -144,12 +143,49 @@ GoRouter appRouter(AppRouterRef ref) {
                     parentNavigatorKey: _rootNavigator,
                     path: 'losas',
                     name: 'losas',
-                    builder: (context, state) => const ColumnaScreen(),
+                    builder: (context, state) => const LosasScreen(),
                     routes: [
-
+                      GoRoute(
+                        parentNavigatorKey: _rootNavigator,
+                        path: 'losas-aligeradas',
+                        name: 'losas-aligeradas',
+                        builder: (context, state) => const DatosLosasAligeradasScreen(),
+                        routes: [
+                          GoRoute(
+                            parentNavigatorKey: _rootNavigator,
+                            path: 'losas-macizas',
+                            name: 'losas-macizas',
+                            builder: (context, state) => const DatosLosasMacizasScreen(),
+                            routes: [
+                              GoRoute(
+                                parentNavigatorKey: _rootNavigator,
+                                path: 'losas-vigas',
+                                name: 'losas-vigas',
+                                builder: (context, state) => const DatosVigasScreen(),
+                                routes: [
+                                  GoRoute(
+                                    parentNavigatorKey: _rootNavigator,
+                                    path: 'losas-escaleras',
+                                    name: 'losas-escaleras',
+                                    builder: (context, state) => const DatosEscalerasScreen(),
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]
+                      )
                     ]
                   )
                 ]
+              ),
+              GoRoute(
+                path: '/lista',
+                builder: (context, state) => const ListaScreen(),
+              ),
+              GoRoute(
+                path: '/mapa',
+                builder: (context, state) => const MapaScreen(),
               ),
               GoRoute(
                 path: '/perfil',

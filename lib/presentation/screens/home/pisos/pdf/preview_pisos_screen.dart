@@ -19,7 +19,7 @@ class PreviewPisosScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('PDF Preview'),
+        title: const Text('PDF Preview'),
       ),
       body: PdfPreview(
         build: (context) => makePdfPisos(

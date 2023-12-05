@@ -38,7 +38,7 @@ Future<Uint8List> makePdfPisos(
                 "TITULO",
                 style: Theme.of(context).header1,
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
             ),
             Container(height: 30),
             Table(
@@ -52,7 +52,7 @@ Future<Uint8List> makePdfPisos(
                         style: Theme.of(context).header5,
                         textAlign: TextAlign.center,
                       ),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                     ),
                     Padding(
                       child: Text(
@@ -60,7 +60,7 @@ Future<Uint8List> makePdfPisos(
                         style: Theme.of(context).header5,
                         textAlign: TextAlign.center,
                       ),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                     ),
                   ],
                 ),
@@ -80,7 +80,7 @@ Future<Uint8List> makePdfPisos(
                 "LISTA DE MATERIALES",
                 style: Theme.of(context).header1,
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
             ),
             /*Text("Please forward the below slip to your accounts payable department."),
             Divider(
@@ -125,7 +125,7 @@ Future<Uint8List> makePdfPisos(
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Text(
                 'Esto es una prueba, gracias!',
                 style: Theme.of(context).header3.copyWith(
@@ -147,7 +147,7 @@ Widget PaddedText(
       final TextAlign align = TextAlign.left,
     }) =>
     Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Text(
         text,
         textAlign: align,

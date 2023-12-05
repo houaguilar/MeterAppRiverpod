@@ -10,8 +10,12 @@ class CustomBottomNavigation extends StatelessWidget {
     switch (location) {
       case '/':
         return 0;
-      case '/perfil':
+      case '/lista':
         return 1;
+      case '/mapa':
+        return 2;
+      case '/perfil':
+        return 3;
       default:
         return 0;
     }
@@ -23,6 +27,12 @@ class CustomBottomNavigation extends StatelessWidget {
         context.go('/');
         break;
       case 1:
+        context.go('/lista');
+        break;
+      case 2:
+        context.go('/mapa');
+        break;
+      case 3:
         context.go('/perfil');
         break;
     }
@@ -33,15 +43,27 @@ class CustomBottomNavigation extends StatelessWidget {
     return BottomNavigationBar(
         elevation: 0,
         currentIndex: getCurrentIndex(context),
+        selectedItemColor: Colors.green,
+        selectedIconTheme: const IconThemeData(size: 30),
+        unselectedIconTheme: const IconThemeData(size: 26),
         onTap: (value) => onItemTapped(context, value),
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_max),
-              label: 'Home'
+              icon: Icon(Icons.home_rounded,),
+              label: '',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.archive_rounded),
+              label: ''
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.location_on_rounded),
+              label: ''
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Perfil'
+              label: ''
           )
         ]
     );
